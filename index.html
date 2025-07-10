@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendamento de Vistorias</title>
+</head>
+<body>
+  <h1>Agendar Vistoria</h1>
+  <form id="form">
+    <input id="nome" placeholder="Nome" required><br>
+    <input id="empreendimento" placeholder="Empreendimento" required><br>
+    <input id="local" placeholder="Local" required><br>
+    <input id="telefone" placeholder="Telefone"><br>
+    <textarea id="observacoes" placeholder="Observações"></textarea><br>
+    <input id="colaborador" placeholder="Colaborador" required><br>
+    <input id="data" placeholder="Data (YYYY-MM-DD)" required><br>
+    <input id="horario" placeholder="Horário (ex: 08:00)" required><br>
+    <button type="submit">Agendar</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("form");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        nome: form.nome.value,
+        empreendimento: form.empreendimento.value,
+        local: form.local.value,
+        telefone: form.telefone.value,
+        observacoes: form.observacoes.value,
+        colaborador: form.colaborador.value,
+        data: form.data.value,
+        horario: form.horario.value
+      };
+      try {
+        await fetch("http://localhost:5678/webhook/agendamento", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        alert("Agendamento enviado com sucesso!");
+        form.reset();
+      } catch (error) {
+        alert("Erro ao enviar o agendamento.");
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
